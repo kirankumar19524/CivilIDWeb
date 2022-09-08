@@ -60,7 +60,7 @@ namespace CivilIDWeb.Controllers
             ////var sortColumn = Request.Form["columns[" + Request.Form["order[0][column]"].FirstOrDefault() + "][name]"].FirstOrDefault();
             ////var sortColumnDirection = Request.Form["order[0][dir]"].FirstOrDefault();
             var searchValue = Request.Query["search[value]"].ToString();
-            int pageSize =  Convert.ToInt32(length);
+            int pageSize = Convert.ToInt32(length);
             int skip = Convert.ToInt32(start);
             int recordsTotal = 0;
             //var customerData = (from tempcustomer in context.Customers select tempcustomer);
@@ -101,43 +101,6 @@ namespace CivilIDWeb.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            X509Store store = new X509Store(StoreName.My, StoreLocation.CurrentUser); store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
-
-            X509Certificate2Collection collection = store.Certificates;
-
-           
-
-
-            string filePath = "";
-            var cert = X509Certificate2.CreateFromPemFile(filePath);
-
-            MIDAuthServiceClient mIDAuthServiceClient = new MIDAuthServiceClient(serviceProviderClientCertificate: cert,
-                                                                                 paciServiceHostName: "",
-                                                                                 paciServicePort: "");
-
-            AuthenticateRequest authenticateRequest = new AuthenticateRequest()
-            {
-                ServiceProviderId = "",
-                ServiceDescriptionEN ="",
-                ServiceDescriptionAR ="",
-                PersonCivilNo="",
-                AuthenticationReasonEn="",
-                AuthenticationReasonAr="",
-                
-
-            };
-
-            var respPN = mIDAuthServiceClient.InitiateAuthRequestPN(authenticateRequest);
-
-
-            var resp = mIDAuthServiceClient.HasMobileIdentity(serviceProviderId: "",
-                                                              civilNo: "");
-
-            //HasMobileIdResponse mobileIdResponse = new HasMobileIdResponse();
-
-            //mobileIdResponse.
-
-
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
