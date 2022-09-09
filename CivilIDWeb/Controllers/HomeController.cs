@@ -69,7 +69,6 @@ namespace CivilIDWeb.Controllers
             //    customerData = customerData.OrderBy(sortColumn + " " + sortColumnDirection);
             //}
 
-            //PageHelper.GetPaged();
 
             string jsonStr = getJson();
             var obj = JsonSerializer.Deserialize<CivilIDLogDataPaginationObj>(jsonStr);

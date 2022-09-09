@@ -1,7 +1,22 @@
+using CivilIDWeb.DB.APPContext;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
+
+//Serilog
+Log.Logger = new LoggerConfiguration().CreateBootstrapLogger();
+builder.Host.UseSerilog(((ctx, lc) => lc
+.ReadFrom.Configuration(ctx.Configuration)));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Add DB context
+builder.Services.AddDbContext<PACIDBContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
 
 var app = builder.Build();
 

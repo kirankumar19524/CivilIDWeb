@@ -1,4 +1,6 @@
-﻿using CivilIDWeb.PACIReponseModels;
+﻿using CivilIDWeb.DB.APPContext;
+using CivilIDWeb.Models;
+using CivilIDWeb.PACIReponseModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MIDAuthSignContract.Entities;
@@ -11,11 +13,17 @@ namespace CivilIDWeb.Controllers
 {
     public class PACIController1 : Controller
     {
-        private ConcurrentDictionary<string, TaskCompletionSource<PACICallbackResponse>> requestTcses;
+        public static ConcurrentDictionary<string, TaskCompletionSource<PACICallbackResponse>> requestTcses = new ConcurrentDictionary<string, TaskCompletionSource<PACICallbackResponse>>();
         private IConfiguration configuration;
-        public PACIController1(IConfiguration config)
+        private PACIDBContext context;
+
+        private ILogger<PACIController1> Logger { get; }
+
+        public PACIController1(ILogger<PACIController1> logger, IConfiguration config, PACIDBContext pACIDBContext)
         {
+            Logger = logger;
             configuration = config;
+            context = pACIDBContext;
         }
 
         // GET: HomeController1
@@ -27,6 +35,7 @@ namespace CivilIDWeb.Controllers
         [Route("/auth/getperson/callback")]
         public IActionResult PaciCallback([FromBody] PACICallbackResponse callbackResponse)
         {
+            Logger.LogDebug("called auth/getperson/callback");
             var requestId = callbackResponse.MIDAuthSignResponse.RequestDetails.RequestID;
             var tcs = requestTcses[requestId];
             bool isRemoved = requestTcses.Remove(requestId, out _);
@@ -43,6 +52,7 @@ namespace CivilIDWeb.Controllers
         [Route("/getperson/{civilno}")]
         public async Task<IActionResult> GetPersonDetails(string civilno)
         {
+            var check = context.PacirequestLogs.ToList();
 
             var certThumbprint = configuration.GetValue<string>("certThumbprint");
             var paciServiceHostName = configuration.GetValue<string>("paciServiceHostName");
