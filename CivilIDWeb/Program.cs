@@ -13,10 +13,10 @@ builder.Host.UseSerilog(((ctx, lc) => lc
 builder.Services.AddControllersWithViews();
 
 // Add DB context
-builder.Services.AddDbContext<PACIDBContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+//builder.Services.AddDbContext<PACIDBContext>(options =>
+//{
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+//});
 
 var app = builder.Build();
 

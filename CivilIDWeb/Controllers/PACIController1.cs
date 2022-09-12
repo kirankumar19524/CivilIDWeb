@@ -15,15 +15,15 @@ namespace CivilIDWeb.Controllers
     {
         public static ConcurrentDictionary<string, TaskCompletionSource<PACICallbackResponse>> requestTcses = new ConcurrentDictionary<string, TaskCompletionSource<PACICallbackResponse>>();
         private IConfiguration configuration;
-        private PACIDBContext context;
+        //private PACIDBContext context;
 
         private ILogger<PACIController1> Logger { get; }
 
-        public PACIController1(ILogger<PACIController1> logger, IConfiguration config, PACIDBContext pACIDBContext)
+        public PACIController1(ILogger<PACIController1> logger, IConfiguration config/*, PACIDBContext pACIDBContext*/)
         {
             Logger = logger;
             configuration = config;
-            context = pACIDBContext;
+            //context = pACIDBContext;
         }
 
         // GET: HomeController1
@@ -52,7 +52,7 @@ namespace CivilIDWeb.Controllers
         [Route("/getperson/{civilno}")]
         public async Task<IActionResult> GetPersonDetails(string civilno)
         {
-            var check = context.PacirequestLogs.ToList();
+            //var check = context.PacirequestLogs.ToList();
 
             var certThumbprint = configuration.GetValue<string>("certThumbprint");
             var paciServiceHostName = configuration.GetValue<string>("paciServiceHostName");
